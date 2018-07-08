@@ -20,7 +20,7 @@ import java.util.ArrayList
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainActivityViewModel: MainActivityViewModel
-    private lateinit var informationListAdapter: InformationListAdapter
+    lateinit var informationListAdapter: InformationListAdapter
     private lateinit var informationDataArrayList: ArrayList<InformationData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,21 +61,25 @@ class MainActivity : AppCompatActivity() {
 
     //refresh data
     private fun setUpEvent() {
-        swipe_refresh.setOnRefreshListener({ loadInformation() })
+        swipe_refresh.setOnRefreshListener({
+            loadInformation()
+        })
     }
 
     //receive response from api
-    private fun updateResponse(response: Response) {
+    fun updateResponse(response: Response) {
+        informationDataArrayList.clear()
         if (response.status === Response.Status.SUCCESS) {
             val fact = response.data as FactData
             Log.d("Actionbar title--->", fact.title)
-            supportActionBar!!.title = fact.title
+            this.supportActionBar!!.title = fact.title
             if (fact.informationData.size > 0) {
                 informationDataArrayList.addAll(parseInformation(fact.informationData))
             }
         } else {
-            Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
-
+            runOnUiThread {
+                Toast.makeText(this.applicationContext, "Something wrong", Toast.LENGTH_SHORT).show()
+            }
         }
         informationListAdapter.notifyDataSetChanged()
 

@@ -42,8 +42,6 @@ class RepositryApi() {
             }
             return repositryApi as RepositryApi
         }
-
-
     }
 
     fun loadFactInformation(): MutableLiveData<Response> {
@@ -53,9 +51,9 @@ class RepositryApi() {
                 if (response.isSuccessful) {
                     responseMutableLiveData.postValue(Response.success(response.body()))
                 } else {
-                    when {
-                        response.code() == HttpURLConnection.HTTP_UNAUTHORIZED -> responseMutableLiveData.postValue(Response.error(null, Throwable("Un authorized error")))
-                        response.code() == HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> responseMutableLiveData.postValue(Response.error(null, Throwable("Connection time out")))
+                    when (response.code()) {
+                        HttpURLConnection.HTTP_UNAUTHORIZED -> responseMutableLiveData.postValue(Response.error(null, Throwable("Un authorized error")))
+                        HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> responseMutableLiveData.postValue(Response.error(null, Throwable("Connection time out")))
                         else -> responseMutableLiveData.postValue(Response.error(null, Throwable("Something wrong")))
                     }
                 }

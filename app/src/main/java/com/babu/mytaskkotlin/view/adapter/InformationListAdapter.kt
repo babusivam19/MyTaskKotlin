@@ -23,13 +23,11 @@ class InformationListAdapter(private val context: Context, informationDataArrayL
         val title = v.tv_title!!
         val description = v.tv_description!!
         val image = v.iv_imageView!!
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): InformationListViewHolder {
-        val v = LayoutInflater.from(parent!!.getContext()).inflate(R.layout.informartion_item_list, parent, false)
+        val v = LayoutInflater.from(parent!!.context).inflate(R.layout.informartion_item_list, parent, false)
         return InformationListViewHolder(v)
-
     }
 
     override fun getItemCount(): Int {
